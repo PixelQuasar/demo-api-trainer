@@ -1,0 +1,24 @@
+{
+  "name": "demo-api-trainer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://PixelQuasar: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@github.com/PixelQuasar/demo-api-trainer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PixelQuasar/demo-api-trainer/issues"
+  },
+  "homepage": "https://github.com/PixelQuasar/demo-api-trainer#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^6.9.2",
+    "nodemon": "^2.0.20"
+  }
+}
