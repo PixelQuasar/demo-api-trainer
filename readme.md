@@ -56,8 +56,6 @@ Return array of users by filter
         { User },
         { User }
     ]
-    
-    
 
 
 ## /user/getUserById/:id
