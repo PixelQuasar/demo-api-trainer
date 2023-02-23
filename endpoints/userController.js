@@ -11,8 +11,20 @@ router.get('/getUserById/:userId', async (req, res) => {
 
 router.get('/getAllUsers', async (req, res) => {
     const users = await userSchema.find({}).lean().exec()
-    res.json(users)
+    res.status(200).json(users)
 })
+
+router.get('/findUsers', async (req, res) => {
+    const filter = req.body
+    try {
+        const users = await userSchema.find(filter).lean().exec()
+        res.status(200).json(users)
+    }
+    catch (error) {
+        res.status(500).send("Error: invalid filter.")
+    }
+})
+
 
 router.post('/addUser', async (req, res) => {
     const content = req.body

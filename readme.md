@@ -41,7 +41,25 @@ Return array of all users.
         { User }
     ]
     
+## /user/findUsers
+
+Return array of users by filter
+
+### body (json):
+    {
+        "key": "value"
+    }
+	
+### Responce:
+    [
+        { User },
+        { User },
+        { User }
+    ]
     
+    
+
+
 ## /user/getUserById/:id
 
 Return one specific user by its id
