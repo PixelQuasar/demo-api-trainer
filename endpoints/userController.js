@@ -31,9 +31,9 @@ router.post('/addUser', async (req, res) => {
     if (confirmUser(content)) {
         try {
             const newUserSchema = new userSchema(content)
-            const response = await newUserSchema.save()
-            console.log(response)
-            res.status(200).send("User has created!")
+            const mongoResponse = await newUserSchema.save()
+            console.log(mongoResponse)
+            res.status(200)
         }
         catch (error) {
             console.log("endpoints - userController - addUser error:", error)
@@ -42,6 +42,22 @@ router.post('/addUser', async (req, res) => {
     }
     else {
         res.status(500).send("Error: invalid keys")
+    }
+})
+
+router.post('/addFollower', async (req, res) => {
+    const content = req.body
+    const targetUser = content.userId
+    const targetFriend = content.friendId
+
+    try {
+        const mongoResponse = await UserSchema.update({_id: targetUser, $push: targetFriend})
+        console.log(mongoResponse)
+        res.status(200)
+    }
+    catch (error) {
+        console.log("endpoints = userController - addFollower error:", error)
+        res.status(500).send(error)
     }
 })
 

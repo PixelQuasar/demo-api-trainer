@@ -13,7 +13,7 @@ const user = new Schema({
     country: String,
     city: String,
     gender: String,
-    arrayOfFriends: Array,
+    arrayOfFollowers: Array,
     arrayOfPosts: Array
 })
 

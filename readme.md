@@ -20,7 +20,7 @@ Adding one user to user DB
 	"city": "Erebor",
 	"age": 8,
 	"gender": "Male",
-	"arrayOfFriends": [],
+	"arrayOfFollowers": [],
 	"arrayOfPosts": []
 	
 ### Responce:
@@ -79,7 +79,7 @@ Return one specific user by its id
 	    "country": "Narnia",
 	    "city": "Erebor",
 	    "gender": "Male",
-	    "arrayOfFriends": [],
+	    "arrayOfFollowers": [],
 	    "arrayOfPosts": [],
 	    "__v": 0
     }
