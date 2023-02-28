@@ -80,9 +80,24 @@ Return array of all users.
 Return array of users by filter
 
 ### body (json):
-    {
+    "fiter": {
         "key": "value"
     }
+	
+### Responce:
+    [
+        { User },
+        { User },
+        { User }
+    ]
+
+
+## GET user/findFollowers
+
+Return array of followers by id array
+
+### body (json):
+    "array": []
 	
 ### Responce:
     [

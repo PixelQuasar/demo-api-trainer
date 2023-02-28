@@ -28,7 +28,7 @@ router.get('/getAllUsers', async (req, res) => {
 })
 
 router.get('/findUsers', async (req, res) => {
-    const filter = req.body
+    const filter = req.body.filter
     try {
         const users = await userSchema.find(filter).lean().exec()
         res.status(200).json(users)
@@ -36,6 +36,18 @@ router.get('/findUsers', async (req, res) => {
     catch (error) {
         console.log("endpoints - userController - findUsers error:", error)
         res.status(500).send("Error: invalid filter.")
+    }
+})
+
+router.get('/findFollowers', async (req, res) => {
+    const arrayOfFollowers = req.body
+    try {
+        const response = await Model.find().where('_id').in(arrayOfFollowers).exec()
+        res.status(200).json(response)
+    }
+    catch (error) {
+        console.log("endpoints - userController - findFollowers error:", error)
+        res.status(500).send("Error: unknown error.")
     }
 })
 
