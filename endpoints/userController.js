@@ -59,13 +59,11 @@ router.post('/addUser', async (req, res) => {
 })
 
 router.post('/updateUser', async (req, res) => {
-    const payload = req.body
     const content = req.body.payload
-    const userId = req.body.userId
+    const userId = req.body.id
     if (confirmUser(content)) {
         try {
-            const newUserSchema = new userSchema(content)
-            const mongoResponse = await newUserSchema.updateOne(userId, {$set: content})
+            const mongoResponse = await newUserSchema.updateOne(userId, { $set: content })
             console.log(mongoResponse)
             res.status(200)
         }
@@ -79,14 +77,26 @@ router.post('/updateUser', async (req, res) => {
     }
 })
 
+router.post('/deleteUser', async (req, res) => {
+    const userId = req.body.id
+    try {
+        const mongoResponse = await newUserSchema.deleteOne({ _id: userId })
+        console.log(mongoResponse)
+        res.status(200)
+    }
+    catch (error) {
+        console.log("endpoints - userController - deleteUser error:", error)
+        res.status(500).send("error: unknown error")
+    }
+})
 
 router.post('/addFollower', async (req, res) => {
     const content = req.body
-    const targetUser = content.userId
-    const targetFriend = content.friendId
+    const targetUser = content.targetId
+    const targetFollower = content.friendId
 
     try {
-        const mongoResponse = await UserSchema.update({_id: targetUser, $push: targetFriend})
+        const mongoResponse = await UserSchema.update({ _id: targetUser, $push: targetFollower })
         console.log(mongoResponse)
         res.status(200)
     }

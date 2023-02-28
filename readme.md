@@ -4,9 +4,9 @@ some documentation to work with this API
 
 # Users:
 
-## /user/addUser
+## POST /user/addUser
 
-Adding one user to user DB
+Add one user to DB
 
 ### body (json):
     "userName": "demoName",
@@ -26,8 +26,42 @@ Adding one user to user DB
 ### Responce:
     200 OK | user has created
     
+## POST /user/updateUser
+
+Update one user to DB by id
+
+### body (json):
+	"id": "123123",
+	"payload": {
+		"userName": "demoName",
+		"creator": "Quasarity",
+		"activeStatus": true,
+		"isClosedProfile": false,
+		"avatarURL": "https://site/pic",
+		"about": "Hi i'm demo!",
+		"description": "That's first account in database to test API work",
+		"country": "Narnia",
+		"city": "Erebor",
+		"age": 8,
+		"gender": "Male",
+		"arrayOfFollowers": [],
+		"arrayOfPosts": []
+	}
+	
+### Responce:
+    200 OK | user has updated
     
-## /user/getAllUsers
+## POST /user/deleteUser
+
+Delete one user by id
+
+### body (json):
+	"id": "123123",
+	
+### Responce:
+    200 OK | user has deleted
+    
+## GET /user/getAllUsers
 
 Return array of all users.
 
@@ -41,7 +75,7 @@ Return array of all users.
         { User }
     ]
     
-## /user/findUsers
+## GET user/findUsers
 
 Return array of users by filter
 
@@ -58,7 +92,7 @@ Return array of users by filter
     ]
 
 
-## /user/getUserById/:id
+## GET /user/getUserById/:id
 
 Return one specific user by its id
 
@@ -85,3 +119,13 @@ Return one specific user by its id
     }
     
     
+## POST /user/addFollower
+
+Add follower to target user
+
+### body (json):
+	"targetId": "123123",
+	"friendId": "456456",
+	
+### Responce:
+    200 OK 
