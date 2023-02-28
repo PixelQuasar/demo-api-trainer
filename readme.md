@@ -60,6 +60,20 @@ Delete one user by id
 	
 ### Responce:
     200 OK | user has deleted
+
+
+## POST /user/deleteUsersByFilter
+
+Delete many users by filter
+
+### body (json):
+	"filter": {
+		"id": "123123",
+	}
+	
+### Responce:
+    200 OK | users has deleted
+
     
 ## GET /user/getAllUsers
 

@@ -12,26 +12,26 @@ router.get('/getUserById/:userId', async (req, res) => {
     }
     catch {
         console.log("endpoints - userController - getUserBuId error:", error)
-        res.send(500)
+        res.send(500).send("Error: unknown error")
     }
 })
 
 router.get('/getAllUsers', async (req, res) => {
     try {
-        const users = await userSchema.find({}).lean().exec()
-        res.status(200).json(users)
+        const mongoResponse = await userSchema.find({}).lean().exec()
+        res.status(200).json(mongoResponse)
     }
     catch {
         console.log("endpoints - userController - getAllUsers error:", error)
-        res.send(500)
+        res.send(500).send()
     }
 })
 
 router.get('/findUsers', async (req, res) => {
     const filter = req.body.filter
     try {
-        const users = await userSchema.find(filter).lean().exec()
-        res.status(200).json(users)
+        const mongoResponse = await userSchema.find(filter).lean().exec()
+        res.status(200).json(mongoResponse)
     }
     catch (error) {
         console.log("endpoints - userController - findUsers error:", error)
@@ -42,8 +42,8 @@ router.get('/findUsers', async (req, res) => {
 router.get('/findFollowers', async (req, res) => {
     const arrayOfFollowers = req.body
     try {
-        const response = await Model.find().where('_id').in(arrayOfFollowers).exec()
-        res.status(200).json(response)
+        const mongoResponse = await userSchema.find().where('_id').in(arrayOfFollowers).exec()
+        res.status(200).json(mongoResponse)
     }
     catch (error) {
         console.log("endpoints - userController - findFollowers error:", error)
@@ -58,7 +58,7 @@ router.post('/addUser', async (req, res) => {
             const newUserSchema = new userSchema(content)
             const mongoResponse = await newUserSchema.save()
             console.log(mongoResponse)
-            res.status(200)
+            res.status(200).send(mongoResponse)
         }
         catch (error) {
             console.log("endpoints - userController - addUser error:", error)
@@ -75,9 +75,9 @@ router.post('/updateUser', async (req, res) => {
     const userId = req.body.id
     if (confirmUser(content)) {
         try {
-            const mongoResponse = await newUserSchema.updateOne(userId, { $set: content })
+            const mongoResponse = await userSchema.updateOne(userId, { $set: content })
             console.log(mongoResponse)
-            res.status(200)
+            res.status(200).send(mongoResponse)
         }
         catch (error) {
             console.log("endpoints - userController - updateUser error:", error)
@@ -92,9 +92,22 @@ router.post('/updateUser', async (req, res) => {
 router.post('/deleteUser', async (req, res) => {
     const userId = req.body.id
     try {
-        const mongoResponse = await newUserSchema.deleteOne({ _id: userId })
+        const mongoResponse = await userSchema.deleteOne({ _id: userId })
         console.log(mongoResponse)
-        res.status(200)
+        res.status(200).send()
+    }
+    catch (error) {
+        console.log("endpoints - userController - deleteUser error:", error)
+        res.status(500).send("error: unknown error")
+    }
+})
+
+router.post('/deleteUsersByFilter', async (req, res) => {
+    const filter = req.body.filter
+    try {
+        const mongoResponse = await userSchema.deleteMany(filter)
+        console.log(mongoResponse)
+        res.status(200).send(mongoResponse)
     }
     catch (error) {
         console.log("endpoints - userController - deleteUser error:", error)
@@ -108,9 +121,9 @@ router.post('/addFollower', async (req, res) => {
     const targetFollower = content.friendId
 
     try {
-        const mongoResponse = await UserSchema.update({ _id: targetUser, $push: targetFollower })
+        const mongoResponse = await userSchema.update({ _id: targetUser, $push: targetFollower })
         console.log(mongoResponse)
-        res.status(200)
+        res.status(200).send()
     }
     catch (error) {
         console.log("endpoints = userController - addFollower error:", error)
