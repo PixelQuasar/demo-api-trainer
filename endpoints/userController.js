@@ -35,7 +35,7 @@ router.get('/findUsers', async (req, res) => {
     }
     catch (error) {
         console.log("endpoints - userController - findUsers error:", error)
-        res.status(500).send("Error: invalid filter.")
+        res.status(403).send(error)
     }
 })
 
@@ -47,7 +47,7 @@ router.get('/findFollowers', async (req, res) => {
     }
     catch (error) {
         console.log("endpoints - userController - findFollowers error:", error)
-        res.status(500).send("Error: unknown error.")
+        res.status(403).send(error)
     }
 })
 
@@ -62,11 +62,11 @@ router.post('/addUser', async (req, res) => {
         }
         catch (error) {
             console.log("endpoints - userController - addUser error:", error)
-            res.status(500).send("error: unknown error")
+            res.status(403).send(error)
         }
     }
     else {
-        res.status(500).send("Error: invalid keys")
+        res.status(500).send("error: invalid keys")
     }
 })
 
@@ -81,11 +81,11 @@ router.post('/updateUser', async (req, res) => {
         }
         catch (error) {
             console.log("endpoints - userController - updateUser error:", error)
-            res.status(500).send("error: unknown error")
+            res.status(403).send(error)
         }
     }
     else {
-        res.status(500).send("Error: invalid keys")
+        res.status(403).send("Error: invalid keys")
     }
 })
 
@@ -98,7 +98,7 @@ router.post('/deleteUser', async (req, res) => {
     }
     catch (error) {
         console.log("endpoints - userController - deleteUser error:", error)
-        res.status(500).send("error: unknown error")
+        res.status(403).send(error)
     }
 })
 
