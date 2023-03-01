@@ -27,7 +27,7 @@ router.get('/getAllUsers', async (req, res) => {
     }
 })
 
-router.get('/findUsers', async (req, res) => {
+router.get('/findUsersByFilter', async (req, res) => {
     const filter = req.body.filter
     try {
         const mongoResponse = await userSchema.find(filter).lean().exec()
@@ -105,7 +105,7 @@ router.post('/deleteUser', async (req, res) => {
 router.post('/deleteUsersByFilter', async (req, res) => {
     const filter = req.body.filter
     try {
-        const mongoResponse = await userSchema.deleteMany(filter)
+        const mongoResponse = await userSchema.deleteMany(filter).lean().exec()
         console.log(mongoResponse)
         res.status(200).send(mongoResponse)
     }

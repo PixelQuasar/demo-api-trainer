@@ -4,54 +4,47 @@ some documentation to work with this API
 
 # Users:
 
-## POST /user/addUser
+## User Schema:
+    userName: String,
+    creator: String,
+    activeStatus: Boolean,
+    isClosedProfile: Boolean,
+    avatarURL: String,
+    about: String,
+    description: String,
+    age: Number,
+    country: String,
+    city: String,
+    gender: String,
+    arrayOfFollowers: Array,
+    arrayOfPosts: Array
+
+## POST /users/addUser
 
 Add one user to DB
 
 ### body (json):
-    "userName": "demoName",
-	"creator": "Quasarity",
-	"activeStatus": true,
-	"isClosedProfile": false,
-	"avatarURL": "https://site/pic",
-	"about": "Hi i'm demo!",
-	"description": "That's first account in database to test API work",
-	"country": "Narnia",
-	"city": "Erebor",
-	"age": 8,
-	"gender": "Male",
-	"arrayOfFollowers": [],
-	"arrayOfPosts": []
+	{
+		obj User
+	}
 	
 ### Responce:
     200 OK | user has created
     
-## POST /user/updateUser
+## POST /users/updateUser
 
 Update one user to DB by id
 
 ### body (json):
 	"id": "123123",
 	"payload": {
-		"userName": "demoName",
-		"creator": "Quasarity",
-		"activeStatus": true,
-		"isClosedProfile": false,
-		"avatarURL": "https://site/pic",
-		"about": "Hi i'm demo!",
-		"description": "That's first account in database to test API work",
-		"country": "Narnia",
-		"city": "Erebor",
-		"age": 8,
-		"gender": "Male",
-		"arrayOfFollowers": [],
-		"arrayOfPosts": []
+		obj User //new atributes
 	}
 	
 ### Responce:
     200 OK | user has updated
     
-## POST /user/deleteUser
+## POST /users/deleteUser
 
 Delete one user by id
 
@@ -62,7 +55,7 @@ Delete one user by id
     200 OK | user has deleted
 
 
-## POST /user/deleteUsersByFilter
+## POST /users/deleteUsersByFilter
 
 Delete many users by filter
 
@@ -75,7 +68,7 @@ Delete many users by filter
     200 OK | users has deleted
 
     
-## GET /user/getAllUsers
+## GET /users/getAllUsers
 
 Return array of all users.
 
@@ -84,12 +77,12 @@ Return array of all users.
 	
 ### Responce:
     [
-        { User },
-        { User },
-        { User }
+        obj User,
+        obj User,
+        obj User
     ]
     
-## GET user/findUsers
+## GET users/findUsersByFilter
 
 Return array of users by filter
 
@@ -100,13 +93,13 @@ Return array of users by filter
 	
 ### Responce:
     [
-        { User },
-        { User },
-        { User }
+        obj User,
+        obj User,
+        obj User
     ]
 
 
-## GET user/findFollowers
+## GET users/findFollowers
 
 Return array of followers by id array
 
@@ -115,13 +108,13 @@ Return array of followers by id array
 	
 ### Responce:
     [
-        { User },
-        { User },
-        { User }
+        obj User,
+        obj User,
+        obj User
     ]
 
 
-## GET /user/getUserById/:id
+## GET /users/getUserById/:id
 
 Return one specific user by its id
 
@@ -130,25 +123,11 @@ Return one specific user by its id
 	
 ### Responce:
     {
-        "_id": "63f70515ddf6ab6f74d1617d",
-	    "userName": "demoName",
-	    "creator": "Quasarity",
-	    "activeStatus": true,
-	    "isClosedProfile": false,
-	    "avatarURL": "https://site/pic",
-	    "about": "Hi i'm demo!",
-	    "description": "That's first account in database to test API work",
-	    "age": 8,
-	    "country": "Narnia",
-	    "city": "Erebor",
-	    "gender": "Male",
-	    "arrayOfFollowers": [],
-	    "arrayOfPosts": [],
-	    "__v": 0
+		obj User
     }
     
     
-## POST /user/addFollower
+## POST /users/addFollower
 
 Add follower to target user
 
@@ -158,3 +137,99 @@ Add follower to target user
 	
 ### Responce:
     200 OK 
+
+
+# Posts:
+
+## Post Schema:
+    isReply: Boolean,
+    originalPostId: String,
+    text: String,
+    embedPhotosURL: Array,
+    authorId: String,
+    dateCreated: String,
+    timeCreated: String,
+    numberOflikes: Number,
+    numberOfViews: Number,
+    numberOfReplies: Number,
+    replyIds: Array,
+
+## GET /posts/getPostById/:postId
+
+### params:
+	postId - id of post
+
+### responce:
+	{
+		obj Post
+	}
+
+
+## GET /posts/getPostsByFilter
+
+Return an object or array of objects by filter.
+
+### body:
+	{
+		"filter": {
+			"_id": "123123"
+		}
+	}
+
+### responce:
+	[
+		obj Post,
+		obj Post,
+		obj Post
+	]
+
+
+## POST /posts/createPost
+
+Add post by Schema to DB
+
+## body:
+
+	{
+	    text: "demo",
+	    embedPhotoURL: "https://pic",
+    	authorId: "123456"
+	}
+
+## responce:
+	{
+		obj Post
+	}
+
+
+## POST /posts/deletePostByFilter
+
+Delete an object or array of objects by filter.
+
+### body:
+	{
+		"filter": {
+			"_id": "123123"
+		}
+	}
+
+### responce:
+	[
+		obj Post,
+		obj Post,
+		obj Post
+	]
+
+
+## POST /posts/likePost/:postId
+
+Add +1 like to selected post.
+
+### params:
+	postId - id of post
+
+### responce:
+	{
+		obj Post
+	}
+
