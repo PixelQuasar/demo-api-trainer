@@ -16,7 +16,7 @@ router.get('/getPostById/:postId', async (req, res) => {
     }
 })
 
-router.get('/getPostsByFilter', async (req, res) => {
+router.post('/getPostsByFilter', async (req, res) => {
     const filter = req.body.filter
     try {
         const mongoResponse = await PostSchema.find(filter).lean().exec()

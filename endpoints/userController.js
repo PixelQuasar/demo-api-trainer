@@ -28,7 +28,7 @@ router.get('/getAllUsers', async (req, res) => {
     }
 })
 
-router.get('/findUsersByFilter', async (req, res) => {
+router.post('/findUsersByFilter', async (req, res) => {
     const filter = req.body.filter
     try {
         const mongoResponse = await UserSchema.find(filter).lean().exec()
@@ -122,7 +122,7 @@ router.post('/follow', async (req, res) => {
     const targetFollower = content.targetFollower
 
     try {
-        const followingMongoResponse = await UserSchema.findOneAndUpdate({ _id: targetFollowing}, {$push: { "arrayOfFollowers": targetFollower} }).lean().exec()
+        const followingMongoResponse = await UserSchema.findOneAndUpdate({ _id: targetFollowing}, {$push: { "arrayOfFollowers": targetFollower } }).lean().exec()
         const followerMongoResponse = await UserSchema.findOneAndUpdate({ _id: targetFollower}, {$push: { "arrayOfFollowing": targetFollowing } }).lean().exec()
         console.log(followerMongoResponse, followingMongoResponse)
         res.status(200).send("success")
