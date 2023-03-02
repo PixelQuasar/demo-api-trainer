@@ -6,6 +6,7 @@ some documentation to work with this API
 
 ## User Schema:
     userName: String,
+    password: String,
     creator: String,
     activeStatus: Boolean,
     isClosedProfile: Boolean,
@@ -36,7 +37,7 @@ Add one user to DB
 Update one user to DB by id
 
 ### body (json):
-	"id": "123123",
+	"id": id,
 	"payload": {
 		obj User //new atributes
 	}
@@ -49,7 +50,7 @@ Update one user to DB by id
 Delete one user by id
 
 ### body (json):
-	"id": "123123",
+	"id": id,
 	
 ### Responce:
     200 OK | user has deleted
@@ -61,7 +62,7 @@ Delete many users by filter
 
 ### body (json):
 	"filter": {
-		"id": "123123",
+		"id": id,
 	}
 	
 ### Responce:
@@ -127,13 +128,13 @@ Return one specific user by its id
     }
     
     
-## POST /users/addFollower
+## POST /users/follow
 
-Add follower to target user
+Follow to user
 
 ### body (json):
-	"targetId": "123123",
-	"friendId": "456456",
+	"targetFollower": id,
+	"friendFollowing": id,
 	
 ### Responce:
     200 OK 
@@ -172,7 +173,7 @@ Return an object or array of objects by filter.
 ### body:
 	{
 		"filter": {
-			"_id": "123123"
+			"_id": id
 		}
 	}
 
@@ -193,7 +194,7 @@ Add post by Schema to DB
 	{
 	    text: "demo",
 	    embedPhotoURL: "https://pic",
-    	authorId: "123456"
+    	authorId: id
 	}
 
 ## responce:
@@ -209,7 +210,7 @@ Delete an object or array of objects by filter.
 ### body:
 	{
 		"filter": {
-			"_id": "123123"
+			"_id": id
 		}
 	}
 
