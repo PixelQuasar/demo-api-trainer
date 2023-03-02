@@ -83,7 +83,7 @@ Return array of all users.
         obj User
     ]
     
-## GET users/findUsersByFilter
+## POST users/findUsersByFilter
 
 Return array of users by filter
 
@@ -139,6 +139,16 @@ Follow to user
 ### Responce:
     200 OK 
 
+## POST /users/login
+
+### body (json):
+    "userName": "name",
+    "password": "qwerty123"
+
+### Responce:
+    {
+        obj User
+    }
 
 # Posts:
 
@@ -166,7 +176,7 @@ Follow to user
 	}
 
 
-## GET /posts/getPostsByFilter
+## POST /posts/getPostsByFilter
 
 Return an object or array of objects by filter.
 
