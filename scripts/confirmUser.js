@@ -13,6 +13,7 @@ function confirmUser(object) {
         "city",
         "gender",
         "arrayOfFollowers",
+        "arrayOfFollowing",
         "arrayOfPosts"
     ]
 

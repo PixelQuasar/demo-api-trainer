@@ -4,6 +4,7 @@ function confirmPost(object) {
         "originalPostId",
         "text",
         "embedPhotosURL",
+        "password",
         "authorId",
         "dateCreated",
         "timeCreated",

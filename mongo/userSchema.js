@@ -5,7 +5,7 @@ const user = new Schema({
     userName: String,
     creator: String,
     activeStatus: Boolean,
-    password: Number,
+    password: String,
     isClosedProfile: Boolean,
     avatarURL: String,
     about: String,
@@ -15,6 +15,7 @@ const user = new Schema({
     city: String,
     gender: String,
     arrayOfFollowers: Array,
+    arrayOfFollowing: Array,
     arrayOfPosts: Array
 })
 

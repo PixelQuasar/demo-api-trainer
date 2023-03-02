@@ -1,14 +1,14 @@
 const express = require("express")
 const router = express.Router()
-const userSchema = require("../mongo/userSchema")
-const postSchema = require("../mongo/postSchema")
+const UserSchema = require("../mongo/userSchema")
+const PostSchema = require("../mongo/postSchema")
 const confirmUser = require("../scripts/confirmUser")
 const { mongo } = require("mongoose")
 
 router.get('/getUserById/:userId', async (req, res) => {
     const id = req.params.userId
     try {
-        const targetUser = await userSchema.findOne({ _id: id }).lean().exec()
+        const targetUser = await UserSchema.findOne({ _id: id }).lean().exec()
         res.json(targetUser)
     }
     catch {
@@ -19,7 +19,7 @@ router.get('/getUserById/:userId', async (req, res) => {
 
 router.get('/getAllUsers', async (req, res) => {
     try {
-        const mongoResponse = await userSchema.find({}).lean().exec()
+        const mongoResponse = await UserSchema.find({}).lean().exec()
         res.status(200).json(mongoResponse)
     }
     catch {
@@ -31,7 +31,7 @@ router.get('/getAllUsers', async (req, res) => {
 router.get('/findUsersByFilter', async (req, res) => {
     const filter = req.body.filter
     try {
-        const mongoResponse = await userSchema.find(filter).lean().exec()
+        const mongoResponse = await UserSchema.find(filter).lean().exec()
         res.status(200).json(mongoResponse)
     }
     catch (error) {
@@ -43,7 +43,7 @@ router.get('/findUsersByFilter', async (req, res) => {
 router.get('/findFollowers', async (req, res) => {
     const arrayOfFollowers = req.body
     try {
-        const mongoResponse = await userSchema.find().where('_id').in(arrayOfFollowers).exec()
+        const mongoResponse = await UserSchema.find().where('_id').in(arrayOfFollowers).exec()
         res.status(200).json(mongoResponse)
     }
     catch (error) {
@@ -56,7 +56,7 @@ router.post('/addUser', async (req, res) => {
     const content = req.body
     if (confirmUser(content)) {
         try {
-            const newUserSchema = new userSchema(content)
+            const newUserSchema = new UserSchema(content)
             const mongoResponse = await newUserSchema.save()
             console.log(mongoResponse)
             res.status(200).send(mongoResponse)
@@ -76,7 +76,7 @@ router.post('/updateUser', async (req, res) => {
     const userId = req.body.id
     if (confirmUser(content)) {
         try {
-            const mongoResponse = await userSchema.updateOne(userId, { $set: content })
+            const mongoResponse = await UserSchema.updateOne(userId, { $set: content })
             console.log(mongoResponse)
             res.status(200).send(mongoResponse)
         }
@@ -93,7 +93,7 @@ router.post('/updateUser', async (req, res) => {
 router.post('/deleteUser', async (req, res) => {
     const userId = req.body.id
     try {
-        const mongoResponse = await userSchema.deleteOne({ _id: userId })
+        const mongoResponse = await UserSchema.deleteOne({ _id: userId })
         console.log(mongoResponse)
         res.status(200).send()
     }
@@ -106,7 +106,7 @@ router.post('/deleteUser', async (req, res) => {
 router.post('/deleteUsersByFilter', async (req, res) => {
     const filter = req.body.filter
     try {
-        const mongoResponse = await userSchema.deleteMany(filter).lean().exec()
+        const mongoResponse = await UserSchema.deleteMany(filter).lean().exec()
         console.log(mongoResponse)
         res.status(200).send(mongoResponse)
     }
@@ -122,7 +122,7 @@ router.post('/addFollower', async (req, res) => {
     const targetFollower = content.friendId
 
     try {
-        const mongoResponse = await userSchema.update({ _id: targetUser, $push: targetFollower })
+        const mongoResponse = await UserSchema.update({ _id: targetUser, $push: targetFollower })
         console.log(mongoResponse)
         res.status(200).send()
     }
@@ -133,16 +133,17 @@ router.post('/addFollower', async (req, res) => {
 })
 
 router.post("/login", async (req, res) => {
-    const password = req.body.password
-    const login = req.body.password
+    const password = parseInt(req.body.password)
+    const login = req.body.userName
     try{
-        const mongoResponse = await userSchema.find({"userName": login, "password": password}).lean().exec()
-        if (mongoResponse == []) throw "Error: incorrect login or password"
+        const mongoResponse = await UserSchema.find({"userName": login, "password": password}).lean().exec()
+        if (mongoResponse.length == 0) throw "Error: incorrect login or password"
+        console.log(mongoResponse)
         res.status(200).send(mongoResponse)
     }
     catch (error) {
         console.log(error)
-        res.status(403).send(error)
+        res.status(401).send(error)
     }
 })
 
