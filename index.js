@@ -33,6 +33,9 @@ mongoose.connection.once('open', async () => {
         if (err) return new Error(`error in starting server, error: ${err}`)
         else console.log(`server started on \nPORT: ${config.APIPort}\nURL: ${config.serverURL}`)
     })
-
+    //USER CONTROLLER
     app.use("/users", require("./endpoints/userController.js"))
+
+    //POST CONTROLLER
+    app.use("/posts", require("./endpoints/postController.js"))
 })

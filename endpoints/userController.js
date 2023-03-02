@@ -13,30 +13,42 @@ router.get('/getUserById/:userId', async (req, res) => {
     }
     catch {
         console.log("endpoints - userController - getUserBuId error:", error)
-        res.send(500)
+        res.send(500).send("Error: unknown error")
     }
 })
 
 router.get('/getAllUsers', async (req, res) => {
     try {
-        const users = await userSchema.find({}).lean().exec()
-        res.status(200).json(users)
+        const mongoResponse = await userSchema.find({}).lean().exec()
+        res.status(200).json(mongoResponse)
     }
     catch {
         console.log("endpoints - userController - getAllUsers error:", error)
-        res.send(500)
+        res.send(500).send()
     }
 })
 
-router.get('/findUsers', async (req, res) => {
-    const filter = req.body
+router.get('/findUsersByFilter', async (req, res) => {
+    const filter = req.body.filter
     try {
-        const users = await userSchema.find(filter).lean().exec()
-        res.status(200).json(users)
+        const mongoResponse = await userSchema.find(filter).lean().exec()
+        res.status(200).json(mongoResponse)
     }
     catch (error) {
         console.log("endpoints - userController - findUsers error:", error)
-        res.status(500).send("Error: invalid filter.")
+        res.status(403).send(error)
+    }
+})
+
+router.get('/findFollowers', async (req, res) => {
+    const arrayOfFollowers = req.body
+    try {
+        const mongoResponse = await userSchema.find().where('_id').in(arrayOfFollowers).exec()
+        res.status(200).json(mongoResponse)
+    }
+    catch (error) {
+        console.log("endpoints - userController - findFollowers error:", error)
+        res.status(403).send(error)
     }
 })
 
@@ -47,49 +59,72 @@ router.post('/addUser', async (req, res) => {
             const newUserSchema = new userSchema(content)
             const mongoResponse = await newUserSchema.save()
             console.log(mongoResponse)
-            res.status(200)
+            res.status(200).send(mongoResponse)
         }
         catch (error) {
             console.log("endpoints - userController - addUser error:", error)
-            res.status(500).send("error: unknown error")
+            res.status(403).send(error)
         }
     }
     else {
-        res.status(500).send("Error: invalid keys")
+        res.status(500).send("error: invalid keys")
     }
 })
 
 router.post('/updateUser', async (req, res) => {
-    const payload = req.body
     const content = req.body.payload
-    const userId = req.body.userId
+    const userId = req.body.id
     if (confirmUser(content)) {
         try {
-            const newUserSchema = new userSchema(content)
-            const mongoResponse = await newUserSchema.updateOne(userId, {$set: content})
+            const mongoResponse = await userSchema.updateOne(userId, { $set: content })
             console.log(mongoResponse)
-            res.status(200)
+            res.status(200).send(mongoResponse)
         }
         catch (error) {
             console.log("endpoints - userController - updateUser error:", error)
-            res.status(500).send("error: unknown error")
+            res.status(403).send(error)
         }
     }
     else {
-        res.status(500).send("Error: invalid keys")
+        res.status(403).send("Error: invalid keys")
     }
 })
 
+router.post('/deleteUser', async (req, res) => {
+    const userId = req.body.id
+    try {
+        const mongoResponse = await userSchema.deleteOne({ _id: userId })
+        console.log(mongoResponse)
+        res.status(200).send()
+    }
+    catch (error) {
+        console.log("endpoints - userController - deleteUser error:", error)
+        res.status(403).send(error)
+    }
+})
+
+router.post('/deleteUsersByFilter', async (req, res) => {
+    const filter = req.body.filter
+    try {
+        const mongoResponse = await userSchema.deleteMany(filter).lean().exec()
+        console.log(mongoResponse)
+        res.status(200).send(mongoResponse)
+    }
+    catch (error) {
+        console.log("endpoints - userController - deleteUser error:", error)
+        res.status(500).send("error: unknown error")
+    }
+})
 
 router.post('/addFollower', async (req, res) => {
     const content = req.body
-    const targetUser = content.userId
-    const targetFriend = content.friendId
+    const targetUser = content.targetId
+    const targetFollower = content.friendId
 
     try {
-        const mongoResponse = await UserSchema.update({_id: targetUser, $push: targetFriend})
+        const mongoResponse = await userSchema.update({ _id: targetUser, $push: targetFollower })
         console.log(mongoResponse)
-        res.status(200)
+        res.status(200).send()
     }
     catch (error) {
         console.log("endpoints = userController - addFollower error:", error)
