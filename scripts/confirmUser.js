@@ -2,6 +2,7 @@ function confirmUser(object) {
     const keys = [
         "userName",
         "creator",
+        "password",
         "activeStatus",
         "isClosedProfile",
         "avatarURL",

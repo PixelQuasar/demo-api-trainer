@@ -3,6 +3,7 @@ const router = express.Router()
 const userSchema = require("../mongo/userSchema")
 const postSchema = require("../mongo/postSchema")
 const confirmUser = require("../scripts/confirmUser")
+const { mongo } = require("mongoose")
 
 router.get('/getUserById/:userId', async (req, res) => {
     const id = req.params.userId
@@ -93,6 +94,20 @@ router.post('/addFollower', async (req, res) => {
     catch (error) {
         console.log("endpoints = userController - addFollower error:", error)
         res.status(500).send(error)
+    }
+})
+
+router.post("/login", async (req, res) => {
+    const password = req.body.password
+    const login = req.body.password
+    try{
+        const mongoResponse = await userSchema.find({"userName": login, "password": password}).lean().exec()
+        if (mongoResponse == []) throw "Error: incorrect login or password"
+        res.status(200).send(mongoResponse)
+    }
+    catch (error) {
+        console.log(error)
+        res.status(403).send(error)
     }
 })
 

@@ -5,6 +5,7 @@ const user = new Schema({
     userName: String,
     creator: String,
     activeStatus: Boolean,
+    password: Number,
     isClosedProfile: Boolean,
     avatarURL: String,
     about: String,
