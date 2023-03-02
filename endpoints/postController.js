@@ -79,7 +79,7 @@ router.post('/createPost', async (req, res) => {
     try {
         const newPostSchema = new PostSchema(content)
         const mongoPostResponse = await newPostSchema.save() // saves the object to post collection
-        const mongoUserResponse = await UserSchema.findOneAndUpdate({ _id: payload.authorId, $push: {"arrayOfPosts": mongoPostResponse._id }}).lean().exec()
+        const mongoUserResponse = await UserSchema.findOneAndUpdate({ _id: payload.authorId}, {$push: {"arrayOfPosts": mongoPostResponse._id }}).lean().exec()
 
         console.log(mongoPostResponse)
         console.log(mongoUserResponse)
