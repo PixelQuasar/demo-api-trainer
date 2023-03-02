@@ -116,18 +116,19 @@ router.post('/deleteUsersByFilter', async (req, res) => {
     }
 })
 
-router.post('/addFollower', async (req, res) => {
+router.post('/follow', async (req, res) => {
     const content = req.body
-    const targetUser = content.targetId
+    const targetFollowing = content.targetId
     const targetFollower = content.friendId
 
     try {
-        const mongoResponse = await UserSchema.update({ _id: targetUser, $push: targetFollower })
-        console.log(mongoResponse)
+        const followingMongoResponse = await UserSchema.updateOne({ _id: targetFollowing, $push: { "arrayOfFollowers": targetFollower} })
+        const followerMongoResponse = await UserSchema.updateOne({ _id: targetFollower, $push: { "arrayOfFollowing": targetFollowing })
+        console.log(followerMongoResponse, followingMongoResponse)
         res.status(200).send()
     }
     catch (error) {
-        console.log("endpoints = userController - addFollower error:", error)
+        console.log("endpoints = userController - follow error:", error)
         res.status(500).send(error)
     }
 })
