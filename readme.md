@@ -18,6 +18,7 @@ some documentation to work with this API
     city: String,
     gender: String,
     arrayOfFollowers: Array,
+    arrayOfFollowing: Array,
     arrayOfPosts: Array
 
 ## POST /users/addUser
